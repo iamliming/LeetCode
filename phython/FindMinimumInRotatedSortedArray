@@ -1,0 +1,32 @@
+#Suppose a sorted array is rotated at some pivot unknown to you beforehand.
+#(i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+#Find the minimum element.
+#You may assume no duplicate exists in the array.
+#2014-11-20
+#liming
+#如果数组的第一个元素小于最后一个元素,则最小的肯定是第一个元素
+#否则取中间的元素,
+#    如果中间元素大于第一个元素,则轴肯定在后半数组中
+#    否则轴在前半部分
+#重复之前的判断
+
+class Solution:
+    # @param num, a list of integer
+    # @return an integer
+    def findMin(self, num):
+	start=0
+	end=len(num) - 1
+	while(start<end):
+		if num[start] < num[end]:
+			return num[start]
+		mid = (start+end)/2
+		if num[mid] > num[start]:
+			start = mid + 1
+		else:
+			end = mid
+	return num[start]
+
+s=Solution()
+nu=[88,90,100,111,113,118,120,122,1,2,3,4,10,11,21,22]
+t=s.findMin(nu)
+print(t)
