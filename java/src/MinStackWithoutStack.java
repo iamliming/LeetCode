@@ -1,8 +1,6 @@
 /**
  * @author liming
- * @version 2.2.4
  * @date 14-11-20 下午3:36
- * @id $Id$
  * 每个node保存当前节点的最小值和当前值
  */
 public class MinStackWithoutStack {
