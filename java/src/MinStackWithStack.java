@@ -2,7 +2,6 @@ import java.util.Stack;
 
 /**
  * @author liming
- * @version 2.2.4
  * @date 14-11-20 下午12:38
  *
  * 有下列数据

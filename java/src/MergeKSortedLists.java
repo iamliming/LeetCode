@@ -1,19 +1,23 @@
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
 /**
  * @author liming
- * @version 2.2.4
  * @date 14-11-26 下午4:48
- * @id $Id$
  * Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
  */
 public class MergeKSortedLists {
 
 	/**
 	 * 使用java远程优先级队列PriorityQueue
+	 *  1.优先级队列 ----优先级最高的先出队列
+	 *  2.堆--  完全二叉树,父节点 < 子节点
+	 *          n个元素序列{k1,k2...ki...kn},当且仅当满足下列关系时称之为堆：
+	 *          (ki <= k2i,ki <= k2i+1)或者(ki >= k2i,ki >= k2i+1), (i = 1,2,3,4...n/2)
 	 * 优先级队列插入一个节点的时间复杂度是O(logN)
+	 * 删除一个元素,会shiftup 复杂度也是logN,和树的层数有关系
 	 * @param lists
 	 * @return
 	 */
@@ -44,35 +48,7 @@ public class MergeKSortedLists {
 
 	public static void main(String[] args) {
 
-		PriorityQueue queue = new PriorityQueue();
-		queue.add(2);
-		queue.add(4);
-		queue.add(5);
-		queue.add(6);
-		queue.add(7);
-		queue.add(3);
-		System.out.println(queue);
-
-		PriorityQueue<ListNode> queue1 = new PriorityQueue(6,new Comparator<ListNode>(){
-			@Override public int compare(ListNode o1, ListNode o2) {
-				return o1.val - o2.val;
-			}});
-		ListNode node2 = new ListNode(2);
-		ListNode node4 = new ListNode(4);
-		ListNode node5 = new ListNode(5);
-		ListNode node6 = new ListNode(6);
-		ListNode node7 = new ListNode(7);
-		ListNode node3 = new ListNode(3);
-		queue1.add(node2);
-		queue1.add(node4);
-		queue1.add(node5);
-		queue1.add(node6);
-		queue1.add(node7);
-		queue1.add(node3);
-		System.out.println(queue1);
-
-
-		/*ListNode node1 = new ListNode(1);
+		ListNode node1 = new ListNode(1);
 		ListNode node2 = new ListNode(2);
 		ListNode node3 = new ListNode(3);
 		ListNode node11 = new ListNode(11);
@@ -101,6 +77,6 @@ public class MergeKSortedLists {
 		while(rst != null){
 			System.out.println(rst.val);
 			rst = rst.next;
-		}*/
+		}
 	}
 }
