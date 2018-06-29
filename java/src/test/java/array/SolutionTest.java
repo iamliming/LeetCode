@@ -1,6 +1,7 @@
 package array;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -72,6 +73,17 @@ public class SolutionTest
         Assert.assertTrue(solution.canJump(nums));
         nums = new int[] {3, 2, 1, 0, 4};
         Assert.assertTrue(!solution.canJump(nums));
+        System.out.println(nums);
+    }
+
+    @Test
+    public void testLetterCombinations()
+    {
+        String letters = "23";
+        List<String> rst = solution.letterCombinations(letters);
+        List<String> except = Arrays.asList("ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf");
+        Assert.assertEquals(except, rst);
+
 
     }
 } 

@@ -178,21 +178,131 @@ public class Solution
         return idx;
     }
 
+    /**
+     * 给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
+     * 给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母
+     * 示例:
+     * <p>
+     * 输入："23"
+     * 输出：["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+     *
+     * @param digits
+     * @return
+     */
+    private static final String[] LETTERS = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+    public List<String> letterCombinations(String digits)
+    {
+        List<String> rst = new ArrayList<>();
+        combination("", 0, digits, rst);
+        return rst;
+    }
+
+    private void combination(String prefix, int offset, String digts, List<String> rst)
+    {
+        if (offset > digts.length() - 1)
+        {
+            rst.add(prefix);
+            return;
+        }
+        String letters = LETTERS[digts.charAt(offset) - '0'];
+        for (int i = 0; i < letters.length(); i++)
+        {
+            combination(prefix + letters.charAt(i), offset + 1, digts, rst);
+        }
+    }
+
     public boolean canJump(int[] nums)
     {
-        for(int i=0;i< nums.length - 1;){
+        for (int i = 0; i < nums.length - 1; )
+        {
             //0跳跃，并且不是结尾
-            if(nums[i] ==0 && i!= nums.length - 1)
+            if (nums[i] == 0 && i != nums.length - 1)
             {
                 return false;
             }
             i += nums[i];
-            if(i == nums.length - 1)
+            if (i == nums.length - 1)
             {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * 给定一个非负整数数组，你最初位于数组的第一个位置。
+     * <p>
+     * 数组中的每个元素代表你在该位置可以跳跃的最大长度。
+     * <p>
+     * 你的目标是使用最少的跳跃次数到达数组的最后一个位置。
+     * <p>
+     * 示例:
+     * <p>
+     * 输入: [2,3,1,1,4]
+     * 输出: 2
+     * 解释: 跳到最后一个位置的最小跳跃数是 2。
+     * 从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。
+     *
+     * @param nums
+     * @return
+     */
+    public int jump(int[] nums)
+    {
+        if (nums.length <= 1)
+            return 0;
+        int curMax = 0; // to mark the last element in a level
+        int level = 0, i = 0;
+        while (i <= curMax)
+        {
+            int furthest = curMax; // to mark the last element in the next level
+            for (; i <= curMax; i++)
+            {
+                furthest = Math.max(furthest, nums[i] + i);
+                if (furthest >= nums.length - 1)
+                    return level + 1;
+            }
+            level++;
+            curMax = furthest;
+        }
+        return -1; // if i < curMax, i can't move forward anymore (the last element in the array can't be reached)
+    }
+
+    /**
+     * 46 全排列
+     * 给定一个没有重复数字的序列，返回其所有可能的全排列。
+     * <p>
+     * 示例:
+     * <p>
+     * 输入: [1,2,3]
+     * 输出:
+     * [
+     * [1,2,3],
+     * [1,3,2],
+     * [2,1,3],
+     * [2,3,1],
+     * [3,1,2],
+     * [3,2,1]
+     * ]
+     *
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> permute(int[] nums)
+    {
+        List<List<Integer>> rst = new ArrayList<>();
+
+
+
+        return rst;
+    }
+    private void permuteRecursive(List<List<Integer>> rst, int[] nums, int offset, List<Integer> item)
+    {
+        if(item.size() == nums.length)
+        {
+            rst.add(item);
+        }
+
     }
 
 }
