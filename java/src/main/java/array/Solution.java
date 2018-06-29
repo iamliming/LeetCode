@@ -178,4 +178,21 @@ public class Solution
         return idx;
     }
 
+    public boolean canJump(int[] nums)
+    {
+        for(int i=0;i< nums.length - 1;){
+            //0跳跃，并且不是结尾
+            if(nums[i] ==0 && i!= nums.length - 1)
+            {
+                return false;
+            }
+            i += nums[i];
+            if(i == nums.length - 1)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
