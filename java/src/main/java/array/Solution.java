@@ -292,17 +292,56 @@ public class Solution
     {
         List<List<Integer>> rst = new ArrayList<>();
 
-
-
         return rst;
     }
+
     private void permuteRecursive(List<List<Integer>> rst, int[] nums, int offset, List<Integer> item)
     {
-        if(item.size() == nums.length)
+        if (item.size() == nums.length)
         {
             rst.add(item);
         }
 
     }
 
+    /**
+     * 5. Longest Palindromic Substring
+     * Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is
+     * 1000.
+     * <p>
+     * Example 1:
+     * <p>
+     * Input: "babad"
+     * Output: "bab"
+     * Note: "aba" is also a valid answer.
+     * Example 2:
+     * <p>
+     * Input: "cbbd"
+     * Output: "bb"
+     *
+     * @param s
+     * @return
+     */
+    public String longestPalindrome(String s)
+    {
+        int len = s.length();
+        int l = 0, e = 0, maxlen = 0;
+        String longest = "";
+        for (int i = 0; i < len; i++)
+        {
+            l = e = i;
+            while (l >= 0 && e < len && s.charAt(l) == s.charAt(e))
+            {
+                l--;
+                e++;
+            }
+            if (e - l - 1 > maxlen)
+            {
+                maxlen = e - l - 1;
+                longest = s.substring(l + 1, e);
+
+            }
+        }
+        return longest;
+    }
 }

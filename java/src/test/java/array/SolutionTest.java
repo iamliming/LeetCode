@@ -69,7 +69,7 @@ public class SolutionTest
     @Test
     public void testCanJump()
     {
-        int[] nums = {1,2,1,1,4};
+        int[] nums = {1, 2, 1, 1, 4};
         Assert.assertTrue(solution.canJump(nums));
         nums = new int[] {3, 2, 1, 0, 4};
         Assert.assertTrue(!solution.canJump(nums));
@@ -84,6 +84,13 @@ public class SolutionTest
         List<String> except = Arrays.asList("ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf");
         Assert.assertEquals(except, rst);
 
+    }
 
+    @Test
+    public void longestPalindrome()
+    {
+        String s = "babad";
+        String rst = solution.longestPalindrome(s);
+        Assert.assertEquals("bab",rst);
     }
 } 
