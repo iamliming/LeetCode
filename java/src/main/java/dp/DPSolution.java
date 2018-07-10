@@ -1,8 +1,14 @@
 package dp;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -84,5 +90,166 @@ public class DPSolution
         int time = Math.min(opt(i - 1, a, rst) + a[0] + a[i - 1], opt(i - 2, a, rst) + a[0] + a[i - 1] + 2 * a[1]);
         rst[i - 1] = time;
         return time;
+    }
+    static class TreeNode implements Cloneable{
+      int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode(int x) { val = x; }
+  }
+
+    public List<TreeNode> generateTrees(int n) {
+        List<TreeNode>[] dp = new List[n+1];
+        List<TreeNode> nodes1 = new ArrayList();
+        nodes1.add(new TreeNode(1));
+        dp[1] = nodes1;
+        for(int i = 2; i <= n; i++){
+            //子树左边。最大节点在根节点
+            List<TreeNode> nodes = new ArrayList();
+            for(TreeNode child : dp[i-1]){
+                TreeNode childTree = clone(child);
+                TreeNode root = new TreeNode(i);
+                root.left = childTree;
+                nodes.add(root);
+            }
+            //最大节点非根
+            for(TreeNode rootTree : dp[i-1]){
+                TreeNode rightTree = rootTree;
+                while(rightTree.right != null){
+                    //复制
+                    TreeNode cloneTree = clone(rootTree);
+                    nodes.add(cloneTree);
+                    while(cloneTree.val != rightTree.val){
+                        cloneTree = cloneTree.right;
+                    }
+                    TreeNode tn = new TreeNode(i);
+                    tn.left = cloneTree.right;
+                    cloneTree.right = tn;
+                    rightTree = rightTree.right;
+                }
+                TreeNode rootBiggest = clone(rootTree);
+                nodes.add(rootBiggest);
+                while(rootBiggest.right != null){
+                    rootBiggest = rootBiggest.right;
+                }
+                TreeNode biggest = new TreeNode(i);
+                rootBiggest.right =  biggest;
+
+            }
+            dp[i] = nodes;
+        }
+        return dp[n];
+    }
+
+    public TreeNode clone(TreeNode node){
+        TreeNode rst = new TreeNode(node.val);
+        if(node.left != null){rst.left = clone(node.left);}
+        if(node.right != null){rst.right = clone(node.right);}
+        return rst;
+    }
+    public boolean isInterleave(String s1, String s2, String s3) {
+        //字段为空得情况
+        int end1 = s1.length() - 1;
+        int end2 = s2.length() - 1;
+        int end = s3.length() - 1;
+        while(end >= 0)
+        {
+            if(end1>=0 && s3.charAt(end) == s1.charAt(end1)){
+                end1--;
+                end--;
+                continue;
+            }
+            if(end2>=0 && s3.charAt(end) == s2.charAt(end2)){
+                end2--;
+                end--;
+                continue;
+            }
+
+        }
+        return end == -1 && end1== -1 && end2 == -1;
+    }
+
+
+    public int numDistinct(String S, String T) {
+        // array creation
+        int[][] mem = new int[T.length()+1][S.length()+1];
+
+        // filling the first row: with 1s
+        for(int j=0; j<=S.length(); j++) {
+            mem[0][j] = 1;
+        }
+
+        // the first column is 0 by default in every other rows but the first, which we need.
+
+        for(int i=0; i<T.length(); i++) {
+            for(int j=0; j<S.length(); j++) {
+                if(T.charAt(i) == S.charAt(j)) {
+                    mem[i+1][j+1] = mem[i][j] + mem[i+1][j];
+                } else {
+                    mem[i+1][j+1] = mem[i+1][j];
+                }
+            }
+        }
+
+        return mem[T.length()][S.length()];
+    }
+
+    public boolean isValid(String s) {
+        Deque<Character> stack = new LinkedList<>();
+        char c1 = '(';
+        char c2 = ')';
+        char c3 = '[';
+        char c4 = ']';
+        char c5 = '{';
+        char c6 = '}';
+        if(s == null || s.length() == 0){
+            return false;
+        }
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(c == c1 || c == c3 || c == c5){
+                stack.offer(c);
+                continue;
+            }
+            Character lastC = stack.peekLast();
+            if(lastC == null){
+                return false;
+            }
+            if(c == c2 && stack.peekLast() == c1){
+                stack.pollLast();
+                continue;
+            }
+            if(c == c4 && stack.peekLast() == c3){
+                stack.pollLast();
+                continue;
+            }
+            if(c == c6 && stack.peekLast() == c5){
+                stack.pollLast();
+                continue;
+            }
+            return false;
+        }
+        return stack.isEmpty();
+    }
+
+    public List<String> generateParenthesis(int n) {
+        if(n <= 0){
+            return new ArrayList<>();
+        }
+        Set<String> set = new HashSet<>();
+        generate(set, 0, 0, n, "");
+        return new ArrayList<>(set);
+    }
+    private void generate(Set<String> rst, int l, int r, int nums, String sb){
+        if(l == nums && r == nums){
+            rst.add(sb);
+            return;
+        }
+        if(l < nums){
+            generate(rst, l+1, r, nums, "(" + sb);
+        }
+        if(r < nums){
+            generate(rst, l, r+1, nums, sb + ")");
+        }
     }
 }

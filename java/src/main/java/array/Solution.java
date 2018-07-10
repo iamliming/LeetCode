@@ -3,6 +3,9 @@ package array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.PriorityQueue;
+
+import node.ListNode;
 
 /**
  * <一句话功能简述> <功能详细描述>
@@ -343,5 +346,58 @@ public class Solution
             }
         }
         return longest;
+    }
+
+    public ListNode mergeKLists(ListNode[] lists)
+    {
+        /*ListNode head = new ListNode(-1);
+        ListNode tail = head;
+        PriorityQueue<ListNode> priorityQueue = new PriorityQueue<ListNode>( (o1, o2) -> o1.val - o2.val);
+        for(ListNode node : lists){
+            while(node != null)
+            {
+                priorityQueue.add(node);
+                node = node.next;
+            }
+        }
+        while(priorityQueue.peek() != null){
+            tail.next = priorityQueue.poll();
+            tail = tail.next;
+        }
+        return head.next;*/
+
+        ListNode head = new ListNode(-1);
+        ListNode tail = head;
+        PriorityQueue<ListNode> priorityQueue;
+        priorityQueue = new PriorityQueue<ListNode>((o1, o2) ->
+        {
+            if (o1.val - o2.val > 0)
+                return 1;
+            else if (o1.val - o2.val < 0)
+                return -1;
+            else if (o1.next == null && o2.next != null)
+                return 1;
+            else if (o2.next == null && o1.next != null)
+                return -1;
+            return 0;
+        }
+        );
+        for (ListNode node : lists)
+        {
+            while (node != null)
+            {
+                priorityQueue.add(node);
+                node = node.next;
+            }
+        }
+
+        while (priorityQueue.peek() != null)
+        {
+            tail.next = priorityQueue.poll();
+            tail = tail.next;
+        }
+
+        return head.next;
+
     }
 }

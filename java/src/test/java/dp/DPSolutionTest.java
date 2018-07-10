@@ -1,9 +1,9 @@
 package dp;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.Before; 
-import org.junit.After; 
 
 /** 
 * DPSolution Tester. 
@@ -44,4 +44,27 @@ public void testCut() throws Exception {
     Assert.assertEquals(28, dpSolution.minTime(nums));
 }
 
+@Test
+    public void testCloneNode()
+{
+    DPSolution.TreeNode node = new DPSolution.TreeNode(1);
+    node.left = new DPSolution.TreeNode(2);
+    node.right = new DPSolution.TreeNode(3);
+    node.left.left = new DPSolution.TreeNode(4);
+    node.left.right = new DPSolution.TreeNode(5);
+
+    DPSolution.TreeNode rst = dpSolution.clone(node);
+    System.out.println(rst);
+    dpSolution.generateTrees(3);
+
+}
+@Test
+public void testisInterleave(){
+    dpSolution.numDistinct("ab","a");
+    dpSolution.isInterleave("aabcc","dbbca","aadbbcbcac");
+}
+@Test
+    public void testisValid(){
+    dpSolution.isValid("]");
+}
 } 
