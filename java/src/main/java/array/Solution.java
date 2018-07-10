@@ -7,6 +7,9 @@ import java.util.PriorityQueue;
 
 import node.ListNode;
 
+import java.util.Stack;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * <一句话功能简述> <功能详细描述>
  *
@@ -42,6 +45,35 @@ public class Solution
             }
         }
         return maxarea;
+    }
+
+    /**
+     * 柱状图中最大的矩形
+     * 同接雨水
+     *
+     * @param heights
+     * @return
+     */
+    public int largestRectangleArea(int[] height)
+    {
+        int len = height.length;
+        Stack<Integer> s = new Stack<Integer>();
+        int maxArea = 0;
+        for (int i = 0; i <= len; i++)
+        {
+            int h = (i == len ? 0 : height[i]);
+            if (s.isEmpty() || h >= height[s.peek()])
+            {
+                s.push(i);
+            }
+            else
+            {
+                int tp = s.pop();
+                maxArea = Math.max(maxArea, height[tp] * (s.isEmpty() ? i : i - 1 - s.peek()));
+                i--;
+            }
+        }
+        return maxArea;
     }
 
     /**
@@ -294,7 +326,6 @@ public class Solution
     public List<List<Integer>> permute(int[] nums)
     {
         List<List<Integer>> rst = new ArrayList<>();
-
         return rst;
     }
 
@@ -308,6 +339,7 @@ public class Solution
     }
 
     /**
+     * <<<<<<< Updated upstream
      * 5. Longest Palindromic Substring
      * Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is
      * 1000.
@@ -399,5 +431,318 @@ public class Solution
 
         return head.next;
 
+    }
+
+    /**
+     * 62 不同路径
+     * 一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。
+     * <p>
+     * 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。
+     * <p>
+     * 问总共有多少条不同的路径？
+     * 例如，上图是一个7 x 3 的网格。有多少可能的路径？
+     * <p>
+     * 说明：m 和 n 的值均不超过 100。
+     * <p>
+     * 示例 1:
+     * <p>
+     * 输入: m = 3, n = 2
+     * 输出: 3
+     * 解释:
+     * 从左上角开始，总共有 3 条路径可以到达右下角。
+     * 1. 向右 -> 向右 -> 向下
+     * 2. 向右 -> 向下 -> 向右
+     * 3. 向下 -> 向右 -> 向右
+     * 示例 2:
+     * <p>
+     * 输入: m = 7, n = 3
+     * 输出: 28
+     */
+    /*public List<String> uniquePaths(int m, int n)
+    {
+        List<String> paths = new ArrayList<>();
+        oneStep(1, 1, m, n, paths, "");
+        return paths;
+    }
+
+    private void oneStep(int hori, int vert, int m, int n, List<String> paths, String prePath)
+    {
+        if (hori == m && vert == n)
+        {
+            paths.add(prePath);
+            return;
+        }
+        if (hori < m)
+        {
+
+            oneStep(hori + 1, vert, m, n, paths, prePath + "->right");
+        }
+        if (vert < n)
+        {
+            oneStep(hori, vert + 1, m, n, paths, prePath + "->down");
+        }
+
+    }*/
+
+    /**
+     * 63 不同路径
+     * 一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。
+     * <p>
+     * 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。
+     * <p>
+     * 现在考虑网格中有障碍物。那么从左上角到右下角将会有多少条不同的路径？
+     * 说明：m 和 n 的值均不超过 100。
+     * <p>
+     * 示例 1:
+     * <p>
+     * 输入:
+     * [
+     * [0,0,0],
+     * [0,1,0],
+     * [0,0,0]
+     * ]
+     * 输出: 2
+     * 解释:
+     * 3x3 网格的正中间有一个障碍物。
+     * 从左上角到右下角一共有 2 条不同的路径：
+     * 1. 向右 -> 向右 -> 向下 -> 向下
+     * 2. 向下 -> 向下 -> 向右 -> 向右
+     * DP 算法
+     */
+    public int uniquePathsWithObstaclesJr(int[][] obstacleGrid)
+    {
+
+        int m = obstacleGrid[0].length;
+        int n = obstacleGrid.length;
+        if (obstacleGrid[n - 1][m - 1] == 1)
+        {
+            return 0;
+        }
+        AtomicInteger pathNum = new AtomicInteger(0);
+        oneStepWithObstacl(1, 1, m, n, obstacleGrid, pathNum);
+        return pathNum.get();
+    }
+
+    private void oneStepWithObstacl(int hori, int vert, int m, int n, int[][] obstacleGrid, AtomicInteger pathNum)
+    {
+        if (hori == m && vert == n)
+        {
+            pathNum.getAndIncrement();
+            return;
+        }
+        if (obstacleGrid[vert - 1][hori - 1] == 1)
+        {
+            return;
+        }
+        if (hori < m)
+        {
+
+            oneStepWithObstacl(hori + 1, vert, m, n, obstacleGrid, pathNum);
+        }
+        if (vert < n)
+        {
+            oneStepWithObstacl(hori, vert + 1, m, n, obstacleGrid, pathNum);
+        }
+
+    }
+
+    // {0, 0, 0, 0},
+    //    {0, 1, 0, 0},
+    //    {0, 0, 0, 0}
+    public int uniquePathsWithObstacles(int[][] obstacleGrid)
+    {
+        int width = obstacleGrid[0].length;
+        int[] dp = new int[width];
+        dp[0] = 1;
+        //左上或者右下的点为1,无路可走
+        if (obstacleGrid[0][0] == 1 || obstacleGrid[obstacleGrid.length - 1][width - 1] == 1)
+        {
+            return 0;
+        }
+        for (int i = 0; i < obstacleGrid.length; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                if (obstacleGrid[i][j] == 1)
+                {
+                    dp[j] = 0;
+                    continue;
+                }
+                if (j > 0)
+                    dp[j] += dp[j - 1];
+            }
+        }
+
+        return dp[width - 1];
+    }
+
+    public int uniquePaths(int m, int n)
+    {
+        //最初的回溯算法，效率低下
+       /* AtomicInteger pathNum = new AtomicInteger(0);
+        oneStep(1, 1, m, n, pathNum);*/
+        //思路:每个节点都是上方和左方两个点路径的和,
+        //使用单个数组代表一行,累计每行点上的和.
+        // 第一列上的点,路径都为1，只有一条线
+        int[] dp = new int[n];
+        dp[0] = 1;
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 1; j < n; j++)
+            {
+                dp[j] += dp[j - 1];
+            }
+        }
+        return dp[n - 1];
+    }
+
+    private void oneStep(int hori, int vert, int m, int n, AtomicInteger pathNum)
+    {
+        if (hori == m && vert == n)
+        {
+            pathNum.getAndIncrement();
+            return;
+        }
+        if (hori < m)
+        {
+
+            oneStep(hori + 1, vert, m, n, pathNum);
+        }
+        if (vert < n)
+        {
+            oneStep(hori, vert + 1, m, n, pathNum);
+        }
+
+    }
+
+    /**
+     * 最小路径和
+     * 题目描述提示帮助提交记录社区讨论阅读解答
+     * 给定一个包含非负整数的 m x n 网格，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+     * <p>
+     * 说明：每次只能向下或者向右移动一步。
+     * <p>
+     * 示例:
+     * <p>
+     * 输入:
+     * [
+     * [1,3,1],
+     * [1,5,1],
+     * [4,2,1]
+     * ]
+     * 输出: 7
+     * 解释: 因为路径 1→3→1→1→1 的总和最小。
+     * <p>
+     * DP算法是解决多阶段决策过程最优化问题的一种常用方法。
+     * 多阶段决策过程（multistep decision
+     * process）是指这样一类特殊的活动过程，过程可以按时间顺序分解成若干个相互联系的阶段，在每一个阶段都需要做出决策，全部过程的决策是一个决策序列。动态规划（dynamic
+     * programming）算法是解决多阶段决策过程最优化问题的一种常用方法，难度比较大，技巧性也很强。利用动态规划算法，可以优雅而高效地解决很多贪婪算法或分治算法不能解决的问题。
+     * 动态规划算法的基本思想是：将待求解的问题分解成若干个相互联系的子问题，先求解子问题，然后从这些子问题的解得到原问题的解；对于重复出现的子问题，只在第一次遇到的时候对它进行求解，并把答案保存起来，让以后再次遇到时直接引用答案，不必重新求解。
+     * 动态规划算法将问题的解决方案视为一系列决策的结果，与贪婪算法不同的是，在贪婪算法中，每采用一次贪婪准则，便做出一个不可撤回的决策；
+     * 而在动态规划算法中，还要考察每个最优决策序列中是否包含一个最优决策子序列，即问题是否具有最优子结构性质。
+     *
+     * @param grid
+     * @return
+     */
+    public int minPathSum(int[][] grid)
+    {
+        for (int i = 0; i < grid.length; i++)
+        {
+            for (int j = 0; j < grid[0].length; j++)
+            {
+                if (i == 0)
+                {
+                    if (j == 0)
+                    {
+                        grid[i][j] = grid[i][j];
+                    }
+                    else
+                    {
+                        grid[i][j] = grid[i][j] + grid[i][j - 1];
+                    }
+                    continue;
+                }
+                if (j == 0)
+                {
+                    grid[i][j] = grid[i][j] + grid[i - 1][j];
+                    continue;
+                }
+                if (grid[i - 1][j] < grid[i][j - 1])
+                {
+                    grid[i][j] = grid[i][j] + grid[i - 1][j];
+                }
+                else
+                {
+                    grid[i][j] = grid[i][j] + grid[i][j - 1];
+                }
+            }
+        }
+        return grid[grid.length - 1][grid[0].length - 1];
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2)
+    {
+        int up = 0, sum = 0;
+        ListNode rst = null, first = null;
+        while (l1 != null || l2 != null || up == 1)
+        {
+            int val1 = l1 != null ? l1.val : 0;
+            int val2 = l2 != null ? l2.val : 0;
+            sum = val1 + val2 + up;
+            ListNode node = null;
+            if (sum > 9)
+            {
+                up = 1;
+                node = new ListNode(sum - 10);
+            }
+            else
+            {
+                up = 0;
+                node = new ListNode(sum);
+            }
+            if (first == null)
+            {
+                rst = node;
+                first = rst;
+            }
+            else
+            {
+                rst.next = node;
+                rst = node;
+            }
+            l1 = l1 != null ? l1.next : null;
+            l2 = l2 != null ? l2.next : null;
+        }
+        return first;
+    }
+
+    public int calculateMinimumHP(int[][] dungeon)
+    {
+        int[][] dp = new int[dungeon.length][dungeon[0].length];
+        for (int i = dungeon.length - 1; i >= 0; i--)
+        {
+            for (int j = dungeon[0].length - 1; j >= 0; j--)
+            {
+                if (i == dungeon.length - 1 && j == dungeon[0].length - 1)
+                {
+                    dp[i][j] = (1 - dungeon[i][j] > 0) ? 1 - dungeon[i][j] : 1;
+                    continue;
+                }
+                if (i == dungeon.length - 1)
+                {
+                    dp[i][j] = (dp[i][j + 1] - dungeon[i][j] > 0) ? dp[i][j + 1] - dungeon[i][j] : 1;
+                }
+                else if (j == dungeon[0].length - 1)
+                {
+                    dp[i][j] = (dp[i + 1][j] - dungeon[i][j] > 0) ? dp[i + 1][j] - dungeon[i][j] : 1;
+                }
+                else
+                {
+                    dp[i][j] = Math.min((dp[i][j + 1] - dungeon[i][j] > 0) ? dp[i][j + 1] - dungeon[i][j] : 1,
+                        (dp[i + 1][j] - dungeon[i][j] > 0) ? dp[i + 1][j] - dungeon[i][j] : 1);
+                }
+            }
+        }
+        return dp[0][0];
     }
 }
