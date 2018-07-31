@@ -2,16 +2,19 @@ package array;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
-
-import node.ListNode;
-
+import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import node.ListNode;
+
 /**
- * <一句话功能简述> <功能详细描述>
+ * <a href="https://leetcode.com/problemset/all/">LeetCode</a>
  *
  * @author liming
  * @version [版本号, 六月 27, 2018]
@@ -744,5 +747,307 @@ public class Solution
             }
         }
         return dp[0][0];
+    }
+
+    public int trap(int[] height)
+    {
+        int l = 0, r = 0, m = 0, water = 0;
+
+        while (r < height.length && l < height.length)
+        {
+            if (l + 1 < height.length && height[l + 1] >= height[l])
+            {
+                l++;
+                r = l;
+                continue;
+            }
+            if (l == r || height[r] < height[l])
+            {
+                r++;
+                continue;
+            }
+            if (height[r] >= height[l])
+            {
+                water += (r - l - 1) * height[l];
+                for (int i = l + 1; i < r; i++)
+                {
+                    water -= height[i];
+                }
+                l = r;
+            }
+        }
+
+        if (r > l && height[r - 1] < height[l])
+        {
+            r = l + 2;
+            for (int i = r; i < height.length; i++)
+            {
+                if (height[i] >= height[r])
+                {
+                    r = i;
+                }
+            }
+
+            if (r < height.length)
+            {
+                water += (r - l - 1) * height[r];
+                for (int i = l + 1; i < m; i++)
+                {
+                    water -= Math.min(height[i], height[l + 1]);
+                }
+            }
+        }
+
+        return water;
+    }
+
+    /**
+     * 49. Group Anagrams
+     * DescriptionHintsSubmissionsDiscussSolution
+     * Given an array of strings, group anagrams together.
+     * <p>
+     * Example:
+     * <p>
+     * Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
+     * Output:
+     * [
+     * ["ate","eat","tea"],
+     * ["nat","tan"],
+     * ["bat"]
+     * ]
+     * Note:
+     * <p>
+     * All inputs will be in lowercase.
+     * The order of your output does not matter.
+     *
+     * @param strs
+     * @return
+     */
+    public List<List<String>> groupAnagrams(String[] strs)
+    {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String s : strs)
+        {
+            char[] chars = s.toCharArray();
+            Arrays.sort(chars);
+            String chs = String.valueOf(chars);
+            if (!map.containsKey(chs))
+            {
+                map.put(chs, new ArrayList<>());
+            }
+            map.get(chs).add(s);
+        }
+        List<List<String>> rst = new ArrayList<>(map.values());
+        return rst;
+
+    }
+
+    private Set<Integer> col = new HashSet<Integer>();
+
+    private Set<Integer> diag1 = new HashSet<Integer>();
+
+    private Set<Integer> diag2 = new HashSet<Integer>();
+
+    public List<List<String>> solveNQueens(int n)
+    {
+        List<List<String>> res = new ArrayList<List<String>>();
+        dfs(res, new ArrayList<String>(), 0, n);
+        return res;
+    }
+
+    private void dfs(List<List<String>> res, List<String> list, int row, int n)
+    {
+        if (row == n)
+        {
+            res.add(new ArrayList<String>(list));
+            return;
+        }
+        for (int i = 0; i < n; i++)
+        {
+            if (col.contains(i) || diag1.contains(row + i) || diag2.contains(row - i))
+                continue;
+
+            char[] charArray = new char[n];
+            Arrays.fill(charArray, '.');
+            charArray[i] = 'Q';
+            String rowString = new String(charArray);
+
+            list.add(rowString);
+            col.add(i);
+            diag1.add(row + i);
+            diag2.add(row - i);
+
+            dfs(res, list, row + 1, n);
+
+            list.remove(list.size() - 1);
+            col.remove(i);
+            diag1.remove(row + i);
+            diag2.remove(row - i);
+        }
+    }
+
+    public List<Interval> insert(List<Interval> intervals, Interval newInterval)
+    {
+        int start = 0, end = intervals.size() - 1;
+        int startIndx = -1, endIndx = -1, startVal = newInterval.start, endVal = newInterval.end;
+        while (end >= start)
+        {
+            int mid = (start + end) / 2;
+            Interval interval = intervals.get(mid);
+            int compare = inInterval(interval, newInterval.start);
+            if (compare == 0)
+            {
+                startIndx = mid;
+                startVal = interval.start;
+                break;
+            }
+
+            if (compare == -1)
+            {
+                if (start == end)
+                {
+                    startIndx = start;
+                    startVal = newInterval.start;
+                    break;
+                }
+                else
+                {
+                    end = mid == start ? mid : mid - 1;
+                }
+            }
+            else
+            {
+                if (start == end)
+                {
+                    startIndx = end + 1;
+                    startVal = newInterval.start;
+                    break;
+                }
+                else
+                {
+                    start = mid == end ? mid : mid + 1;
+                }
+            }
+        }
+        start = 0;
+        end = intervals.size() - 1;
+        while (end >= start)
+        {
+            int mid = (start + end) / 2;
+            int compare = inInterval(intervals.get(mid), newInterval.end);
+            if (compare == 0)
+            {
+                endIndx = mid;
+                endVal = intervals.get(mid).end;
+                break;
+            }
+
+            if (compare == -1)
+            {
+                if (start == end)
+                {
+                    endIndx = start - 1;
+                    endVal = newInterval.end;
+                    break;
+                }
+                else
+                {
+                    end = mid == start ? mid : mid - 1;
+                }
+            }
+            else
+            {
+                if (start == end)
+                {
+                    endIndx = end;
+                    endVal = newInterval.end;
+                    break;
+                }
+                else
+                {
+                    start = mid == end ? mid : mid + 1;
+                }
+            }
+        }
+
+        for (int i = endIndx; i >= startIndx && i >= 0; i--)
+        {
+            intervals.remove(i);
+        }
+        Interval interval = new Interval(startVal, endVal);
+        intervals.add(startIndx < 0 ? 0 : startIndx, interval);
+        return intervals;
+    }
+
+    private int inInterval(Interval interval, int val)
+    {
+        if (interval.start <= val && interval.end >= val)
+        {
+            return 0;
+        }
+        if (interval.start > val)
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+
+    static class Interval
+    {
+        int start;
+
+        int end;
+
+        Interval()
+        {
+            start = 0;
+            end = 0;
+        }
+
+        Interval(int s, int e)
+        {
+            start = s;
+            end = e;
+        }
+    }
+
+    public List<String> letterCasePermutation(String S)
+    {
+        List<String> rst = new ArrayList();
+        if (S == null || S.length() == 0)
+        {
+            rst.add("");
+            return rst;
+        }
+        dsf(rst, S.toCharArray(), 0, new char[S.length()]);
+        return rst;
+    }
+
+    private void dsf(List<String> rst, char[] s, int idx, char[] chars)
+    {
+        if (idx == s.length)
+        {
+            rst.add(String.valueOf(chars));
+            return;
+        }
+        char c = s[idx];
+        if (c >= 'a' && c <= 'z')
+        {
+            char[] cc = Arrays.copyOf(chars, chars.length);
+            cc[idx] = (char)(c - 32);
+            dsf(rst, s, idx + 1, cc);
+        }
+        else if(c >= 'A' && c <= 'Z')
+        {
+            char[] cc = Arrays.copyOf(chars, chars.length);
+            cc[idx] = (char)(c + 32);
+            dsf(rst, s, idx + 1, cc);
+        }
+
+        chars[idx] = c;
+        dsf(rst, s, idx + 1, chars);
     }
 }
