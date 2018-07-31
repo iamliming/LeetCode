@@ -27,8 +27,9 @@ public class TwoSum
      * 暴力方式
      * 1.排序
      * 2.循环
-     *   二分法查找target-nums[n]的数据
-     *   时间复杂度O(n^2)
+     * 二分法查找target-nums[n]的数据
+     * 时间复杂度O(n^2)
+     *
      * @param nums
      * @param target
      */
@@ -36,18 +37,19 @@ public class TwoSum
     {
         int[] rst = new int[2];
         Arrays.sort(nums);
-        for(int i=0; i<nums.length; i++)
+        for (int i = 0; i < nums.length; i++)
         {
             int expect = target - nums[i];
             int idx = Arrays.binarySearch(nums, expect);
-            if(idx >= 0 && idx != i)
+            if (idx >= 0 && idx != i)
             {
-                if(idx < i)
+                if (idx < i)
                 {
                     rst[0] = idx;
                     rst[1] = i;
                 }
-                else{
+                else
+                {
                     rst[0] = i;
                     rst[1] = idx;
                 }
@@ -61,6 +63,7 @@ public class TwoSum
      * hash code的方式，空间换时间
      * 空间复杂度O(n)
      * 时间复杂度O(n)
+     *
      * @param nums
      * @param target
      * @return
@@ -68,11 +71,11 @@ public class TwoSum
     public int[] twoSumHash(int[] nums, int target)
     {
         int[] rst = new int[2];
-        Map<Integer ,Integer> map = new HashMap<Integer, Integer>();
-        for(int i = 0; i < nums.length; i++)
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int i = 0; i < nums.length; i++)
         {
             int val = target - nums[i];
-            if(map.containsKey(val))
+            if (map.containsKey(val))
             {
                 rst[0] = map.get(val);
                 rst[1] = i;
@@ -82,4 +85,7 @@ public class TwoSum
         }
         return rst;
     }
+
+
+
 }

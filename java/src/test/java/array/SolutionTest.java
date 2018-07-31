@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import node.ListNode;
+
 /**
  * Solution Tester.
  *
@@ -69,7 +71,7 @@ public class SolutionTest
     @Test
     public void testCanJump()
     {
-        int[] nums = {1,2,1,1,4};
+        int[] nums = {1, 2, 1, 1, 4};
         Assert.assertTrue(solution.canJump(nums));
         nums = new int[] {3, 2, 1, 0, 4};
         Assert.assertTrue(!solution.canJump(nums));
@@ -84,7 +86,145 @@ public class SolutionTest
         List<String> except = Arrays.asList("ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf");
         Assert.assertEquals(except, rst);
 
+    }
 
+    @Test
+    public void longestPalindrome()
+    {
+        String s = "babad";
+        String rst = solution.longestPalindrome(s);
+        Assert.assertEquals("bab",rst);
+    }
+    @Test
+    public void testMergeKLists()
+    {
+        ListNode node1 = new ListNode(1);
+        ListNode node2 = new ListNode(4);
+        ListNode node3 = new ListNode(5);
+        node1.next = node2;
+        node2.next = node3;
+
+        ListNode node4 = new ListNode(1);
+        ListNode node5 = new ListNode(2);
+        ListNode node6 = new ListNode(4);
+        ListNode node7 = new ListNode(6);
+        node4.next = node5;
+        node5.next = node6;
+        node6.next = node7;
+
+        ListNode node8 = new ListNode(2);
+        ListNode node9 = new ListNode(5);
+        ListNode node10 = new ListNode(8);
+        node8.next = node9;
+        node9.next = node10;
+
+        ListNode[] nodes = new ListNode[3];
+        nodes[0] = node1;
+        nodes[1] = node4;
+        nodes[2] = node8;
+        solution.mergeKLists(nodes);
+
+        nodes = new ListNode[2];
+        ListNode node11 = new ListNode(-2);
+        ListNode node22 = new ListNode(-1);
+        ListNode node33 = new ListNode(-1);
+        node11.next = node22;
+        node22.next = node33;
+        nodes[0] = node11;
+        solution.mergeKLists(nodes);
+    }
+    public void testUniquePaths()
+    {
+        int rst = solution.uniquePaths(3, 2);
+        System.out.println(rst);
+        Assert.assertEquals(rst, 3);
+
+        rst = solution.uniquePaths(7, 3);
+        System.out.println(rst);
+        Assert.assertEquals(rst, 28);
+    }
+
+    @Test
+    public void testUniquePathⅡ()
+    {
+        int[][] obstacleGrid = new int[][]
+            {
+                {0, 0, 0, 0},
+                {0, 1, 0, 0},
+                //                {0, 0, 0, 0}*/
+            };
+        Assert.assertEquals(solution.uniquePathsWithObstacles(obstacleGrid), 2);
+        obstacleGrid = new int[][] {{0, 0}};
+        Assert.assertEquals(solution.uniquePathsWithObstacles(obstacleGrid), 1);
+        obstacleGrid = new int[][]
+            {
+                {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0}, {
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, {
+                0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0}, {
+                1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1}, {
+                0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0}, {
+                0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0}, {
+                1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0}, {
+                0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0}, {
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0}, {
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0}, {
+                0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {
+                1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1}, {
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0}, {
+                0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0}, {
+                0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1}, {
+                1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0}, {
+                0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1}, {
+                0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1}, {
+                1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {
+                0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1}, {
+                0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0}
+            };
+        Assert.assertEquals(solution.uniquePathsWithObstacles(obstacleGrid), 1637984640);
+        //        Assert.assertEquals(solution.uniquePathsWithObstacles(obstacleGrid),1637984640);
+
+    }
+
+    @Test
+    public void testMinPathSum()
+    {
+        int[][] nums = {{1, 3, 1},
+            {1, 5, 1},
+            {4, 2, 1}
+        };
+        Assert.assertEquals(solution.minPathSum(nums), 7);
+    }
+
+    @Test
+    public void testLargestRectangleArea()
+    {
+        int[] nums = {2,1,5,6,2,3};
+        Assert.assertEquals(solution.largestRectangleArea(nums), 10);
+    }
+
+    @Test
+    public void testAddTwoNumbers(){
+        ListNode node1 = new ListNode(2);
+        ListNode node2 = new ListNode(4);
+        ListNode node3 = new ListNode(3);
+        node1.next = node2;
+        node2.next = node3;
+
+        ListNode node21 = new ListNode(5);
+        ListNode node22 = new ListNode(6);
+        ListNode node23 = new ListNode(4);
+        node21.next = node22;
+        node22.next = node23;
+
+        solution.addTwoNumbers(node1, node21);
+
+    }
+
+    @Test
+    public void testHp(){
+        int[][] test = {{1,-3,3},{0,-2,0},{-3,-3,-3}};
+        solution.calculateMinimumHP(test);
     }
 
     @Test
