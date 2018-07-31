@@ -67,4 +67,9 @@ public void testisInterleave(){
     public void testisValid(){
     dpSolution.isValid("]");
 }
+@Test
+    public void testCanJump(){
+        int[] nums = new int[]{3,2,1,0,4};
+        dpSolution.canJump(nums);
+}
 } 
