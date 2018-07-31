@@ -1,6 +1,5 @@
 package array;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -227,6 +226,16 @@ public class SolutionTest
         int[][] test = {{1,-3,3},{0,-2,0},{-3,-3,-3}};
         solution.calculateMinimumHP(test);
     }
+
+    @Test
+    public void testConvert(){
+        String s = "PAYPALISHIRING";
+        String rst = solution.convert(s, 3);
+        Assert.assertEquals(rst,"PAHNAPLSIIGYIR");
+        rst = solution.convert(s, 1);
+        Assert.assertEquals(rst,"PAYPALISHIRING");
+    }
+}
 
     @Test
     public void testTrap(){
