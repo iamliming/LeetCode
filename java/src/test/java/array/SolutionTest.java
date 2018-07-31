@@ -1,5 +1,6 @@
 package array;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -235,7 +236,7 @@ public class SolutionTest
         rst = solution.convert(s, 1);
         Assert.assertEquals(rst,"PAYPALISHIRING");
     }
-}
+
 
     @Test
     public void testTrap(){

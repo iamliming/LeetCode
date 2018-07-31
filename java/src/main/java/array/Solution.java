@@ -748,6 +748,121 @@ public class Solution
         }
         return dp[0][0];
     }
+    /**
+     * The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+     * <p>
+     * P   A   H   N
+     * A P L S I I G
+     * Y   I   R
+     * And then read line by line: "PAHNAPLSIIGYIR"
+     * <p>
+     * Write the code that will take a string and make this conversion given a number of rows:
+     * <p>
+     * string convert(string s, int numRows);
+     * Example 1:
+     * <p>
+     * Input: s = "PAYPALISHIRING", numRows = 3
+     * Output: "PAHNAPLSIIGYIR"
+     * Example 2:
+     * <p>
+     * Input: s = "PAYPALISHIRING", numRows = 4
+     * Output: "PINALSIGYAHRPI"
+     * Explanation:
+     * <p>
+     * P     I    N
+     * A   L S  I G
+     * Y A   H R
+     * P     I
+     *
+     * @param s
+     * @param numRows
+     * @return
+     */
+    public String convert(String s, int numRows)
+    {
+        int listSize = Math.min(s.length(), numRows);
+        List<List<Character>> list = new ArrayList();
+        for (int i = 0; i < listSize; i++)
+        {
+            list.add(new ArrayList());
+        }
+
+        int l = 0;
+        boolean down = true;
+
+        for (int idx = 0; idx < s.length(); idx++)
+        {
+            char c = s.charAt(idx);
+            list.get(l).add(c);
+            if (down)
+            {
+                if (l == numRows - 1)
+                {
+                    down = false;
+                    if (l - 1 >= 0)
+                    {
+                        l--;
+                    }
+                }
+                else
+                {
+                    l++;
+                }
+            }
+            else
+            {
+                if (l == 0)
+                {
+                    down = true;
+                    if (l + 1 < numRows)
+                    {
+                        l++;
+                    }
+                }
+                else
+                {
+                    l--;
+                }
+            }
+        }
+        StringBuilder ss = new StringBuilder("");
+        for (List<Character> lt : list)
+        {
+            for (Character c : lt)
+            {
+                ss.append(c);
+            }
+        }
+        return ss.toString();
+    }
+
+    public boolean isInterleave(String s1, String s2, String s3)
+    {
+        boolean[][] dp = new boolean[s1.length() + 1][s2.length() + 1];
+
+        for (int i = 0; i < s1.length() + 1; i++)
+        {
+            for (int j = 0; j < s2.length() + 1; j++)
+            {
+                if (i == 0 && j == 0)
+                {
+                    dp[0][0] = true;
+                }
+                else if(i==0){
+                    dp[i][j] = dp[i][j-1] && s2.charAt(j-1) == s3.charAt(i+j-1);
+                }
+                else if(j==0){
+                    dp[i][j] = dp[i-1][j] && s1.charAt(i-1) == s3.charAt(i+j-1);
+                }
+                else{
+                    dp[i][j] = (dp[i][j-1] && s2.charAt(j-1) == s3.charAt(i+j-1)) || (dp[i-1][j] && s1.charAt(i-1) == s3.charAt(i+j-1));
+                }
+            }
+
+        }
+        return dp[s1.length()][s2.length()];
+    }
+
 
     public int trap(int[] height)
     {
