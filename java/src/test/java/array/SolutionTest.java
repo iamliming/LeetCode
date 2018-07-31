@@ -86,4 +86,13 @@ public class SolutionTest
 
 
     }
+
+    @Test
+    public void testConvert(){
+        String s = "PAYPALISHIRING";
+        String rst = solution.convert(s, 3);
+        Assert.assertEquals(rst,"PAHNAPLSIIGYIR");
+        rst = solution.convert(s, 1);
+        Assert.assertEquals(rst,"PAYPALISHIRING");
+    }
 } 
