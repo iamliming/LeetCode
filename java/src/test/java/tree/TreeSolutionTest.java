@@ -13,6 +13,7 @@ import org.junit.Test;
  */
 public class TreeSolutionTest
 {
+
     private TreeSolution solution;
     @Before
     public void setUp()
@@ -42,4 +43,20 @@ public class TreeSolutionTest
         System.out.println(rst);
     }
 
+    @Test
+    public void testSortedArrayToBST(){
+        int[] arrays = new int[]{-10,-3,0,5,9};
+        TreeNode node = solution.sortedArrayToBST(arrays);
+    }
+    @Test
+    public void inorderTraversal()
+        throws Exception
+    {
+        TreeNode root = new TreeNode(1);
+        TreeNode right1 = new TreeNode(2);
+        TreeNode left2 = new TreeNode(3);
+        root.right = right1;
+        right1.left = left2;
+        System.out.println(solution.inorderTraversal(root));
+    }
 }
