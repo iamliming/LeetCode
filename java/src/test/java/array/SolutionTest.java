@@ -1,5 +1,6 @@
 package array;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -235,4 +236,76 @@ public class SolutionTest
         rst = solution.convert(s, 1);
         Assert.assertEquals(rst,"PAYPALISHIRING");
     }
-} 
+
+
+    @Test
+    public void testTrap(){
+        Character c = 'a';
+        System.out.println(c.hashCode());
+        c = 'b';
+        System.out.println(c.hashCode());
+        int[] nums = {0,1,0,2,1,0,1,3,2,1,2,1};
+        solution.trap(nums);
+        nums = new int[]{5,4,1,2};
+        solution.trap(nums);
+    }
+
+    @Test
+    public void test(){
+        solution.groupAnagrams(new String[]{"eat","tea","tan","ate","nat","bat"});
+    }
+
+    @Test
+    public void testQueue(){
+
+        int num = 5000;
+        for(;num < 300000;){
+            num *= Math.E*1.5;
+        }
+        //solution.solveNQueens(3);
+    }
+    @Test
+    public void testinsert()
+    {
+        //[[1,2],[3,5],[6,7],[8,10],[12,16]]
+
+        //[[0,3],[4,4],[8,8],[18,21]]
+//        Solution.Interval interval1 = new Solution.Interval(1,2);
+//        Solution.Interval interval2 = new Solution.Interval(3,5);
+//        Solution.Interval interval3 = new Solution.Interval(6,7);
+//        Solution.Interval interval4 = new Solution.Interval(8,10);
+
+        Solution.Interval interval1 = new Solution.Interval(0,3);
+        Solution.Interval interval2 = new Solution.Interval(4,4);
+        Solution.Interval interval3 = new Solution.Interval(8,8);
+        Solution.Interval interval4 = new Solution.Interval(18,21);
+
+        Solution.Interval interval5 = new Solution.Interval(12,16);
+        Solution.Interval interval = new Solution.Interval(4,6);
+        List<Solution.Interval> list = new ArrayList<>();
+        list.add(interval1);
+        list.add(interval2);
+        list.add(interval3);
+        list.add(interval4);
+//        list.add(interval5);
+        List<Solution.Interval> rst = solution.insert(list, interval);
+//        for(Solution.Interval i: rst){
+//            System.out.println(i.start+","+i.end);
+//        }
+
+
+        solution.letterCasePermutation("a1");
+
+    }
+
+    @Test
+    public void testMulip(){
+        char c = '2';
+        char c1 = '3';
+        int val = (c-'0')*(c1-'0');
+        System.out.println(val);
+        c = 9+'0';
+        System.out.println(c);
+    }
+
+}
