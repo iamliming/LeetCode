@@ -13,6 +13,13 @@ import org.junit.Test;
  */
 public class TreeSolutionTest
 {
+    @Test
+    public void buildTree()
+        throws Exception
+    {
+        TreeNode node = solution.buildTree(new int[]{3,9,20,15,7}, new int[]{9,3,15,20,7});
+        System.out.println(node.val);
+    }
 
     private TreeSolution solution;
     @Before

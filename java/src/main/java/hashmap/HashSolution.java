@@ -2,8 +2,12 @@ package hashmap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import domain.Point;
 
 /**
  * <一句话功能简述> <功能详细描述>
@@ -265,5 +269,44 @@ public class HashSolution
             }
         }
         return rst;
+    }
+
+
+    public int maxPoints(Point[] points) {
+        if(points == null) return -1;
+        if(points.length <= 2) return points.length;
+        Map<String, Set<Point>> map = new HashMap<>();
+        int max = 0;
+        for(int i = 0; i < points.length; i++){
+            Point p1 = points[i];
+            for(int j = i + 1; j < points.length; j++){
+                Point p2 = points[j];
+                String s = null;
+                if(p1.x == p2.x && p1.y == p2.y){continue;}
+                if(p1.x == p2.x){
+                    s = "1_0_" + p1.x;
+                }
+                else if(p1.y == p2.y){
+                    s = "0_1_" + p1.y;
+                }
+                else{
+                    s = "1_"+(p2.x-p1.x)/(p1.y-p2.y)+"_"+(p2.x*p1.y - p1.x*p2.y)/(p1.y - p2.y);
+                }
+                if(map.containsKey(s)){
+                    if(!map.get(s).contains(p2)){
+                        map.get(s).add(p2);
+                        max = Math.max(max, map.get(s).size());
+                    }
+                }
+                else{
+                    Set<Point> set  = new HashSet<>();
+                    set.add(p1);
+                    set.add(p2);
+                    map.put(s, set);
+                    max = Math.max(2, max);
+                }
+            }
+        }
+        return max;
     }
 }

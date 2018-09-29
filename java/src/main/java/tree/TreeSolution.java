@@ -156,46 +156,58 @@ public class TreeSolution
      * 1
      * Output: 3
      * Follow up:
-     * What if the BST is modified (insert/delete operations) often and you need to find the kth smallest frequently? How would you optimize the kthSmallest routine?
+     * What if the BST is modified (insert/delete operations) often and you need to find the kth smallest frequently?
+     * How would you optimize the kthSmallest routine?
      *
      * @param node
      * @param k
      * @return
      */
-    public int kthSmallest(TreeNode root, int k){
+    public int kthSmallest(TreeNode root, int k)
+    {
         count = k;
         preorder(root);
         return kth;
     }
 
     int count, kth;
-    private void preorder(TreeNode node){
-        if(node.left != null) preorder(node.left);
-        if(count == 0) return;
-        if(count == 1) {
+
+    private void preorder(TreeNode node)
+    {
+        if (node.left != null)
+            preorder(node.left);
+        if (count == 0)
+            return;
+        if (count == 1)
+        {
             kth = node.val;
             return;
         }
         count--;
-        if(node.right != null) preorder(node.right);
+        if (node.right != null)
+            preorder(node.right);
     }
 
     /**
      * 94. Binary Tree Inorder Traversal
-     *  递归法或者迭代
+     * 递归法或者迭代
+     *
      * @param root
      * @return
      */
-    public List<Integer> inorderTraversal(TreeNode root){
+    public List<Integer> inorderTraversal(TreeNode root)
+    {
         List<Integer> rst = new ArrayList<>();
         Deque<TreeNode> stack = new LinkedList<>();
-        TreeNode node  = root;
-        while(node != null || !stack.isEmpty()){
-            while(node != null && node.left != null){
+        TreeNode node = root;
+        while (node != null || !stack.isEmpty())
+        {
+            while (node != null && node.left != null)
+            {
                 stack.push(node);
                 node = node.left;
             }
-            if(node == null)
+            if (node == null)
             {
                 node = stack.pop();
             }
@@ -204,9 +216,85 @@ public class TreeSolution
         }
         return rst;
     }
-    private void traversalHelp(TreeNode node, List<Integer> rst){
-        if(node.left != null){traversalHelp(node.left, rst);}
+
+    private void traversalHelp(TreeNode node, List<Integer> rst)
+    {
+        if (node.left != null)
+        {
+            traversalHelp(node.left, rst);
+        }
         rst.add(node.val);
-        if(node.right != null) traversalHelp(node.right, rst);
+        if (node.right != null)
+            traversalHelp(node.right, rst);
+    }
+
+    /**
+     * 105. Construct Binary Tree from Preorder and Inorder Traversal
+     * Given preorder and inorder traversal of a tree, construct the binary tree.
+     * <p>
+     * Note:
+     * You may assume that duplicates do not exist in the tree.
+     * <p>
+     * For example, given
+     * <p>
+     * preorder = [3,9,20,15,7]
+     * inorder = [9,3,15,20,7]
+     * Return the following binary tree:
+     * <p>
+     * 3
+     * / \
+     * 9  20
+     * /  \
+     * 15   7
+     *
+     * @param preorder
+     * @param inorder
+     * @return
+     */
+    public TreeNode buildTree(int[] preorder, int[] inorder)
+    {
+        if (inorder == null || inorder.length == 0)
+            return null;
+        return doBuild(0, 0, inorder.length - 1, preorder, inorder);
+    }
+
+    private TreeNode doBuild(int preStart, int inStart, int inEnd, int[] preorder, int[] inorder)
+    {
+        TreeNode node = new TreeNode(preorder[preStart]);
+        int inNum = -1;
+        for (int i = inStart; i <= inEnd; i++)
+        {
+            if (inorder[i] == preorder[preStart])
+            {
+                inNum = i;
+                break;
+            }
+        }
+        //left Tree
+        if (inNum != inStart)
+        {
+            node.left = doBuild(preStart + 1, inStart, inNum - 1, preorder, inorder);
+        }
+        if (inNum != inEnd)
+        {
+            node.right = doBuild(preStart + inNum - inStart + 1, inNum + 1, inEnd, preorder, inorder);
+        }
+        return node;
+    }
+
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        if(s == null) return false;
+        if(s.val == t.val){if(sameTree(s, t)) return true;}
+        else{
+            if(isSubtree(s.left, t)) return true;
+            if(isSubtree(s.right, t)) return true;
+        }
+        return false;
+    }
+
+    private boolean sameTree(TreeNode s, TreeNode t){
+        if(s == null && t == null) return true;
+        if(s == null || t == null || s.val != t.val) return false;
+        return sameTree(s.left, t.left) && sameTree(s.right, t.right);
     }
 }
