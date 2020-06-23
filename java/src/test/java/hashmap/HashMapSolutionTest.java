@@ -13,6 +13,8 @@ import org.junit.Test;
  */
 public class HashMapSolutionTest
 {
+
+
     HashMapSolution solution;
     @Before
     public void setUp()
@@ -25,6 +27,8 @@ public class HashMapSolutionTest
     public void isHappy()
         throws Exception
     {
+        System.out.println(1 << 2);
+        System.out.println(1 << 1);
         solution.isHappy(2);
     }
 
@@ -33,4 +37,10 @@ public class HashMapSolutionTest
         solution.isIsomorphic("ab","aa");
     }
 
+    @Test
+    public void wordPattern()
+        throws Exception
+    {
+        solution.wordPattern("abba", "dog dog dog dog");
+    }
 }

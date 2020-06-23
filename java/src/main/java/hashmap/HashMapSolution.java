@@ -1,6 +1,8 @@
 package hashmap;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -52,6 +54,28 @@ public class HashMapSolution
                     return false;
                 }
             }
+        }
+        return true;
+    }
+    public boolean wordPattern(String pattern, String str) {
+        if(pattern == null ||  str == null) return false;
+        Map<Character, String> map = new HashMap();
+        Map<String, Character> mapV = new HashMap();
+        String[] arr = str.split(" ");
+        if(pattern.length() != arr.length) return false;
+        for(int i = 0; i < pattern.length(); i++){
+            Character c = pattern.charAt(i);
+            String v = arr[i];
+            if(map.get(c) == null && mapV.get(v) == null){
+                map.put(c, v);
+                mapV.put(v,c);
+                continue;
+            }
+
+            else if(map.get(c) != null && mapV.get(v) != null && map.get(c).equals(v) && mapV.get(v).equals(c)){
+                continue;
+            }
+            return false;
         }
         return true;
     }

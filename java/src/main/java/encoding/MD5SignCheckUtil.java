@@ -103,6 +103,7 @@ public class MD5SignCheckUtil
         throws Exception
     {
         StringBuilder sb = new StringBuilder();
+        Map<String, String> map = new HashMap<>();
         String appkey = "migusumei";
         sb.append(appkey);
         Map<String, Object> params = new HashMap<>();
@@ -112,6 +113,7 @@ public class MD5SignCheckUtil
         sb.append("a").append("abc").append("b").append("bbc").append("_timestamp").append(timestamp).append(appkey);
         String signIn = getMD5(sb.toString());
         System.out.println(signCheck(appkey, timestamp, signIn, params).isSuccess());
+        System.out.println(System.currentTimeMillis()/1000);
     }
 }
 
